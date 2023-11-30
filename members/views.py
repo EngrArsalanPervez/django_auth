@@ -22,22 +22,22 @@ def custom_register(request):
             # Check if the username is unique
             if User.objects.filter(username=username).exists():
                 form.add_error('username', 'This username is already taken.')
+                return render(request, 'members/register.html', {'form': form})
 
             # Check if the email is unique
             if User.objects.filter(email=email).exists():
                 form.add_error('email', 'This email is already registered.')
+                return render(request, 'members/register.html', {'form': form})
 
             user = User.objects.create_user(username=username, email=email, password=password)
-
             login(request, user)
             return redirect('core:homepage')
-
         else:
             messages.error(request, 'Registration Failed!')
-
+            return render(request, 'members/register.html', {'form': form})
     else:
         form = CustomRegisterForm()
-    return render(request, 'members/register.html', {'form': form})
+        return render(request, 'members/register.html', {'form': form})
 
 
 def custom_login(request):
@@ -55,9 +55,10 @@ def custom_login(request):
                 return redirect('core:homepage')
             else:
                 messages.error(request, 'Invalid username or password.')
+                return render(request, 'members/login.html', {'form': form})
     else:
         form = CustomLoginForm()
-    return render(request, 'members/login.html', {'form': form})
+        return render(request, 'members/login.html', {'form': form})
 
 
 def custom_logout(request):
@@ -68,16 +69,17 @@ def custom_logout(request):
 def custom_update_email(request):
     if request.method == 'POST':
         form = CustomUpdateEmailForm(request.POST)
-        email = form['email']
 
         if form.is_valid():
-            if User.objects.filter(email=email).exists():
-                form.add_error('email', 'This email is already registered.')
-                print("Already")
+            email = form.cleaned_data['email']
 
-            request.user.email = form.cleaned_data['email']
+            if User.objects.exclude(email= request.user.email).filter(email=email).exists():
+                form.add_error('email', 'This email is already registered.')
+                return render(request, 'members/update_email.html', {'form': form})
+
+            request.user.email = email
             request.user.save()
             return redirect('core:homepage')
     else:
         form = CustomUpdateEmailForm(initial={'email': request.user.email})
-    return render(request, 'members/update_email.html', {'form': form})
+        return render(request, 'members/update_email.html', {'form': form})
