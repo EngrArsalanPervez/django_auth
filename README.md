@@ -9,3 +9,4 @@
 1. Register
 2. Login
 3. Logout
+4. Update Email
