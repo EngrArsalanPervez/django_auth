@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 
 class CustomLoginForm(forms.Form):
@@ -52,3 +54,42 @@ class CustomUpdateEmailForm(forms.Form):
         'placeholder': 'Enter Email',
         'class': 'form-control',
     }))
+
+
+class CustomUpdatePasswordForm(forms.Form):
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Enter Old Password',
+        'class': 'form-control',
+    }))
+
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Enter New Password',
+        'class': 'form-control',
+    }))
+
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Repeat Password',
+        'class': 'form-control',
+    }))
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+
+        if password and confirm_password and password != confirm_password:
+            raise forms.ValidationError("Passwords do not match.")
+
+        # Additional validation logic if needed
+        return cleaned_data
+
+    def clean_password(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            raise forms.ValidationError(str(e))
+
+        return password
