@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from members.forms import (
     CustomLoginForm,
     CustomRegisterForm,
+    CustomUpdateEmailForm,
 )
 
 
@@ -62,3 +63,21 @@ def custom_login(request):
 def custom_logout(request):
     logout(request)
     return redirect('core:homepage')
+
+
+def custom_update_email(request):
+    if request.method == 'POST':
+        form = CustomUpdateEmailForm(request.POST)
+        email = form['email']
+
+        if form.is_valid():
+            if User.objects.filter(email=email).exists():
+                form.add_error('email', 'This email is already registered.')
+                print("Already")
+
+            request.user.email = form.cleaned_data['email']
+            request.user.save()
+            return redirect('core:homepage')
+    else:
+        form = CustomUpdateEmailForm(initial={'email': request.user.email})
+    return render(request, 'members/update_email.html', {'form': form})

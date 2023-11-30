@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 
 
 class CustomLoginForm(forms.Form):
@@ -44,3 +45,10 @@ class CustomRegisterForm(forms.Form):
 
         # Additional validation logic if needed
         return cleaned_data
+
+
+class CustomUpdateEmailForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={
+        'placeholder': 'Enter Email',
+        'class': 'form-control',
+    }))
