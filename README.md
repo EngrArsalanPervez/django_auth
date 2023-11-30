@@ -3,6 +3,7 @@
 ### Key Points
 1. Function based view
 2. Fully Customized
+3. Active Navbar link
 
 ### Pages
 1. Register
