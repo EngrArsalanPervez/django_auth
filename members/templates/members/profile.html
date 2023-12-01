@@ -9,7 +9,7 @@
                 <div class="mb-3 text-center">
                     <h3>Profile</h3>
                 </div>
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label">Full Name</label>

@@ -122,7 +122,7 @@ def custom_update_password(request):
 
 def custom_profile(request):
     if request.method == 'POST':
-        form = CustomProfileForm(request.POST)
+        form = CustomProfileForm(request.POST, request.FILES)
 
         if form.is_valid():
             name = form.cleaned_data['name']
@@ -130,6 +130,9 @@ def custom_profile(request):
             profile_picture = form.cleaned_data['profile_picture']
 
             print(name, age, profile_picture)
+
+            if UserProfile.objects.filter(user=request.user).exists():
+                UserProfile.objects.filter(user=request.user).delete()
 
             UserProfile.objects.create(
                 user=request.user,
