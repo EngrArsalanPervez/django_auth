@@ -12,35 +12,34 @@
                         <a class="nav-link {% if request.resolver_match.url_name == 'homepage' %}active{% endif %}"
                            aria-current="page" href="{% url 'core:homepage' %}">Home</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            More
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'members:update_email' %}">Update Email</a></li>
-                            <li><a class="dropdown-item" href="{% url 'members:update_password' %}">Update Password</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                     </li>
 
                 </ul>
-                <form class="d-flex" role="search">
+                <form class="d-flex w-25" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             {% endif %}
             <ul class="navbar-nav mb-2 mb-lg-0">
                 {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'logout' %}active{% endif %}"
-                           href="{% url 'members:logout' %}">Logout ({{ request.user.username }})</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            {{ request.user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'members:update_email' %}">Update Email</a></li>
+                            <li><a class="dropdown-item" href="{% url 'members:update_password' %}">Update Password</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item {% if request.resolver_match.url_name == 'logout' %}active{% endif %}"
+                                   href="{% url 'members:logout' %}">Logout</a></li>
+                        </ul>
                     </li>
                 {% else %}
                     <li class="nav-item">
