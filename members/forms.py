@@ -80,16 +80,10 @@ class CustomUpdatePasswordForm(forms.Form):
         if password and confirm_password and password != confirm_password:
             raise forms.ValidationError("Passwords do not match.")
 
-        # Additional validation logic if needed
-        return cleaned_data
-
-    def clean_password(self):
-        cleaned_data = super().clean()
-        password = cleaned_data.get('password')
-
         try:
             validate_password(password)
         except ValidationError as e:
             raise forms.ValidationError(str(e))
 
-        return password
+        return cleaned_data
+
