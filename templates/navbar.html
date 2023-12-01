@@ -30,6 +30,7 @@
                             {{ request.user.username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'members:profile' %}">Profile</a></li>
                             <li><a class="dropdown-item" href="{% url 'members:update_email' %}">Update Email</a></li>
                             <li><a class="dropdown-item" href="{% url 'members:update_password' %}">Update Password</a>
                             </li>

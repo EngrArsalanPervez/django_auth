@@ -87,3 +87,18 @@ class CustomUpdatePasswordForm(forms.Form):
 
         return cleaned_data
 
+
+class CustomProfileForm(forms.Form):
+    name = forms.CharField(required=False, widget=forms.TextInput(attrs={
+        'placeholder': 'Enter Your Full Name',
+        'class': 'form-control',
+    }))
+
+    age = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={
+        'placeholder': 'Enter Your Age',
+        'class': 'form-control',
+    }))
+
+    profile_picture = forms.FileField(required=False, widget=forms.FileInput(attrs={
+        'class': 'form-control',
+    }))

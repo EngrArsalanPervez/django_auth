@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <div class="container-flex mt-5">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <div class="mb-3 text-center">
+                    <h3>Profile</h3>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Age</label>
+                        {{ form.age }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Profile Picture</label>
+                        {{ form.profile_picture }}
+                    </div>
+
+                    {% if form.errors or form.non_field_errors %}
+                        <div class="mb-3 p-6 bg-danger-subtle rounded-3">
+                            {% for field in form %}
+                                {{ field.errors }}
+                            {% endfor %}
+
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    {% for message in messages %}
+                        <ul>
+                            <li{% if message.tags %} class="{{ message.tags }} text-danger"{% endif %}>
+                                {{ message }}
+                            </li>
+                        </ul>
+                    {% endfor %}
+
+                    <div class="mb-3 text-center">
+                        <button type="submit" class="btn btn-secondary w-100">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

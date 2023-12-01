@@ -8,7 +8,9 @@ from members.forms import (
     CustomRegisterForm,
     CustomUpdateEmailForm,
     CustomUpdatePasswordForm,
+    CustomProfileForm,
 )
+from members.models import UserProfile
 
 
 def custom_register(request):
@@ -116,3 +118,30 @@ def custom_update_password(request):
     else:
         form = CustomUpdatePasswordForm()
         return render(request, 'members/update_password.html', {'form': form})
+
+
+def custom_profile(request):
+    if request.method == 'POST':
+        form = CustomProfileForm(request.POST)
+
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            age = form.cleaned_data['age']
+            profile_picture = form.cleaned_data['profile_picture']
+
+            print(name, age, profile_picture)
+
+            UserProfile.objects.create(
+                user=request.user,
+                name=name,
+                age=age,
+                profile_picture=profile_picture,
+            ).save()
+
+            return redirect('core:homepage')
+        else:
+            messages.error(request, 'Update Profile Failed!')
+            return render(request, 'members/profile.html', {'form': form})
+    else:
+        form = CustomProfileForm()
+        return render(request, 'members/profile.html', {'form': form})

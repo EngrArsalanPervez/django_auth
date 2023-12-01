@@ -5,6 +5,7 @@ from members import views
 app_name = 'members'
 
 urlpatterns = [
+    path('profile/', views.custom_profile, name='profile'),
     path('register/', views.custom_register, name='register'),
     path('login/', views.custom_login, name='login'),
     path('logout/', views.custom_logout, name='logout'),
