@@ -14,3 +14,8 @@
 4. Update Email
 5. Update Password
 6. Update Profile details and Image
+
+
+
+
+Project Implemented on [Academic Master](https://academic-master.com/)
